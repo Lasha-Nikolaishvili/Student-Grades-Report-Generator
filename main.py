@@ -61,6 +61,13 @@ def get_bel_avg_eng_studs(students_table, grades):
     return text_data
 
 
+def get_pdf_paragraph(text, header_styles):
+    report_header_text = text
+    report_header_style = ParagraphStyle(**header_styles)
+    report_header_paragraph = Paragraph(report_header_text, report_header_style)
+    return report_header_paragraph
+
+
 def generate_report(students_table, grades, file_name='report.pdf'):
     font_path = Path('fonts', 'bpg_glaho_sylfaen.ttf')
     font_name = 'Sylfaen'
@@ -74,107 +81,114 @@ def generate_report(students_table, grades, file_name='report.pdf'):
     pdf_elements = []
 
     # create and add report header
-    report_header_text = """<b>სტუდენტის ქულების რეპორტი</b>"""
-    report_header_style = ParagraphStyle(
-        name='ReportHeaderStyle',
-        fontName=font_name,
-        fontSize=20,
-        textColor=colors.black,
-        spaceAfter=50,
-        alignment=1
-    )
-    report_header_paragraph = Paragraph(report_header_text, report_header_style)
+    report_header_paragraph = get_pdf_paragraph(
+        """<b>სტუდენტის ქულების რეპორტი</b>""",
+        {
+            'name': 'ReportHeaderStyle',
+            'fontName': font_name,
+            'fontSize': 20,
+            'textColor': colors.black,
+            'spaceAfter': 50,
+            'alignment': 1
+        })
     pdf_elements.append(report_header_paragraph)
 
     # write average points data
-    average_points_header_text = """<b>სტუდენტების ყველაზე მაღალი/დაბალი საშუალო ქულა.</b>"""
-    average_points_header_style = ParagraphStyle(
-        name='AveragePointsHeaderStyle',
-        fontName=font_name,
-        fontSize=13,
-        textColor=colors.black,
-        spaceAfter=10,
+    average_points_header_paragraph = get_pdf_paragraph(
+        """<b>სტუდენტების ყველაზე მაღალი/დაბალი საშუალო ქულა.</b>""",
+        {
+            'name': 'AveragePointsHeaderStyle',
+            'fontName': font_name,
+            'fontSize': 13,
+            'textColor': colors.black,
+            'spaceAfter': 10,
+        }
     )
-    average_points_header_paragraph = Paragraph(average_points_header_text, average_points_header_style)
     pdf_elements.append(average_points_header_paragraph)
 
-    average_points_body_text = f"""
-        • {get_highest_avg_grade(students_table, grades)}<br/>
-        • {get_lowest_avg_grade(students_table, grades)}<br/>
-        """
-    average_points_body_style = ParagraphStyle(
-        name='AveragePointsBodyStyle',
-        fontName=font_name,
-        fontSize=11,
-        textColor=colors.black,
-        spaceAfter=10,
+    average_points_body_paragraph = get_pdf_paragraph(
+        f"""
+            • {get_highest_avg_grade(students_table, grades)}<br/>
+            • {get_lowest_avg_grade(students_table, grades)}<br/>
+            """,
+        {
+            'name': 'AveragePointsBodyStyle',
+            'fontName': font_name,
+            'fontSize': 11,
+            'textColor': colors.black,
+            'spaceAfter': 10,
+        }
     )
-    average_points_body_paragraph = Paragraph(average_points_body_text, average_points_body_style)
     pdf_elements.append(average_points_body_paragraph)
 
     # write mathematics highest/lowest points data
-    maths_points_header_text = """<b>სტუდენტის ყველაზე მაღალი/დაბალი მათემატიკის ქულა.</b>"""
-    maths_points_header_style = ParagraphStyle(
-        name='MathsPointsHeaderStyle',
-        fontName=font_name,
-        fontSize=13,
-        textColor=colors.black,
-        spaceAfter=10,
+    maths_points_header_paragraph = get_pdf_paragraph(
+        """<b>სტუდენტების ყველაზე მაღალი/დაბალი მათემატიკის ქულა.</b>""",
+        {
+            'name': 'MathsPointsHeaderStyle',
+            'fontName': font_name,
+            'fontSize': 13,
+            'textColor': colors.black,
+            'spaceAfter': 10,
+        }
     )
-    maths_points_header_paragraph = Paragraph(maths_points_header_text, maths_points_header_style)
     pdf_elements.append(maths_points_header_paragraph)
 
-    maths_points_body_text = f"""
+    maths_points_body_paragraph = get_pdf_paragraph(
+        f"""
             • {get_highest_math_grade(students_table, grades)}<br/>
             • {get_lowest_math_grade(students_table, grades)}<br/>
-            """
-    maths_points_body_style = ParagraphStyle(
-        name='MathsPointsBodyStyle',
-        fontName=font_name,
-        fontSize=11,
-        textColor=colors.black,
-        spaceAfter=10,
+            """,
+        {
+            'name': 'MathsPointsBodyStyle',
+            'fontName': font_name,
+            'fontSize': 11,
+            'textColor': colors.black,
+            'spaceAfter': 10,
+        }
     )
-    maths_points_body_paragraph = Paragraph(maths_points_body_text, maths_points_body_style)
     pdf_elements.append(maths_points_body_paragraph)
 
     # write students with above average english grade
-    english_points_header_text = """<b>სტუდენტები ინგლისურის საშუალო ქულასთან შედარებით.</b>"""
-    english_points_header_style = ParagraphStyle(
-        name='EnglishPointsHeaderStyle',
-        fontName=font_name,
-        fontSize=13,
-        textColor=colors.black,
-        spaceAfter=10,
+    english_points_header_paragraph = get_pdf_paragraph(
+        """<b>სტუდენტები ინგლისურის საშუალო ქულასთან შედარებით.</b>""",
+        {
+            'name': 'EnglishPointsHeaderStyle',
+            'fontName': font_name,
+            'fontSize': 13,
+            'textColor': colors.black,
+            'spaceAfter': 10,
+        }
     )
-    english_points_header_paragraph = Paragraph(english_points_header_text, english_points_header_style)
     pdf_elements.append(english_points_header_paragraph)
 
-    english_points_body_text = f"""
+    english_points_body_paragraph = get_pdf_paragraph(
+        f"""
                • {get_abv_avg_eng_studs(students_table, grades)}<br/>
                • {get_bel_avg_eng_studs(students_table, grades)}<br/>
-               """
-    english_points_body_style = ParagraphStyle(
-        name='EnglishPointsBodyStyle',
-        fontName=font_name,
-        fontSize=11,
-        textColor=colors.black,
-        spaceAfter=10,
+               """,
+        {
+            'name': 'EnglishPointsBodyStyle',
+            'fontName': font_name,
+            'fontSize': 11,
+            'textColor': colors.black,
+            'spaceAfter': 10,
+        }
     )
-    english_points_body_paragraph = Paragraph(english_points_body_text, english_points_body_style)
     pdf_elements.append(english_points_body_paragraph)
 
     # create and add table header
-    table_header_text = """<b>ყველა სტუდენტის ქულების ცხრილი</b>"""
-    table_header_style = ParagraphStyle(
-        name='TableHeaderStyle',
-        fontName=font_name,
-        fontSize=13,
-        textColor=colors.black,
-        spaceAfter=15,
-        alignment=1
+    table_header_paragraph = get_pdf_paragraph(
+        """<b>ყველა სტუდენტის ქულების ცხრილი</b>""",
+        {
+            'name': 'TableHeaderStyle',
+            'fontName': font_name,
+            'fontSize': 13,
+            'textColor': colors.black,
+            'spaceAfter': 15,
+            'alignment': 1
+        }
     )
-    table_header_paragraph = Paragraph(table_header_text, table_header_style)
     pdf_elements.append(table_header_paragraph)
 
     # style and add a table to the PDF elements
